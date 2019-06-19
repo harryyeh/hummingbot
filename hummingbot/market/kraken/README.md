@@ -6,7 +6,11 @@
 
 - Kraken Python API Library
 
-Install the python library
+- Notes
+    + Websockets are for public information only
+
+
+- Install the python library
 
 ```shell
 pip install kraken-wsclient-py
