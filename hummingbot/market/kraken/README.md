@@ -127,3 +127,11 @@ my_client.subscribe_public(
 my_client.start()
 ```
 
+* To Do
+
+- Place Order
+- Cancel Order
+- Get Balances
+- Get Trading Pairs
+- OrderBook
+- Trade History
