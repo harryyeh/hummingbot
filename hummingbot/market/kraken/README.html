@@ -1099,10 +1099,52 @@ body .markdown-body
 <li>Orderbook Websocket</li>
 </ul>
 <div class="codehilite"><pre><span class="kn">from</span> <span class="nn">kraken_wsclient_py</span> <span class="kn">import</span> <span class="n">kraken_wsclient_py</span> <span class="k">as</span> <span class="n">client</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="c1"># Logging Functions</span>
+<span class="k">def</span> <span class="nf">get_console_handler</span><span class="p">():</span>
+    <span class="n">FORMATTER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%(asctime)s</span><span class="s"> — </span><span class="si">%(name)s</span><span class="s"> — </span><span class="si">%(levelname)s</span><span class="s"> — </span><span class="si">%(message)s</span><span class="s">&quot;</span><span class="p">)</span>
+    <span class="n">console_handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+    <span class="n">console_handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">FORMATTER</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">console_handler</span>
+
+<span class="k">def</span> <span class="nf">set_log_level</span><span class="p">(</span><span class="n">level</span><span class="p">):</span>
+    <span class="n">log_level</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;critical&#39;</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">,</span>
+        <span class="s">&#39;error&#39;</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span>
+        <span class="s">&#39;warning&#39;</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span>
+        <span class="s">&#39;info&#39;</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+        <span class="s">&#39;debug&#39;</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
+        <span class="s">&#39;notset&#39;</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">NOTSET</span>
+    <span class="p">}</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">log_level</span><span class="p">[</span><span class="n">level</span><span class="o">.</span><span class="n">lower</span><span class="p">()])</span>
+
+<span class="k">def</span> <span class="nf">get_logger</span><span class="p">(</span><span class="n">logger_name</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">config</span><span class="p">,</span> <span class="n">logger</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">logger_name</span><span class="p">)</span>
+    <span class="n">level</span> <span class="o">=</span> <span class="n">set_log_level</span><span class="p">(</span><span class="s">&#39;info&#39;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="p">)</span> <span class="c1"># better to have too much log than not enough</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">get_console_handler</span><span class="p">())</span>
+    <span class="c1"># with this pattern, it&#39;s rarely necessary to propagate the error up to parent</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">propagate</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">return</span> <span class="n">logger</span>
 
 <span class="k">def</span> <span class="nf">my_handler</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
     <span class="c1"># Here you can do stuff with the messages</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="c1">#print(type(message))</span>
+    <span class="c1"># Check type</span>
+    <span class="c1"># if dict</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="o">==</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="c1"># Connection Information, Channel and Heartbeat</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="c1"># if list</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="s">&quot;kraken&quot;</span><span class="p">)</span>
+
 
 <span class="n">my_client</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">WssClient</span><span class="p">()</span>
 <span class="n">my_client</span><span class="o">.</span><span class="n">subscribe_public</span><span class="p">(</span>

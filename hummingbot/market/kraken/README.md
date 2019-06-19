@@ -41,10 +41,52 @@ my_client.start()
 
 ```python
 from kraken_wsclient_py import kraken_wsclient_py as client
+import logging
+import sys
+
+# Logging Functions
+def get_console_handler():
+    FORMATTER = logging.Formatter("%(asctime)s — %(name)s — %(levelname)s — %(message)s")
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setFormatter(FORMATTER)
+    return console_handler
+
+def set_log_level(level):
+    log_level = {
+        'critical': logging.CRITICAL,
+        'error': logging.ERROR,
+        'warning': logging.WARNING,
+        'info': logging.INFO,
+        'debug': logging.DEBUG,
+        'notset': logging.NOTSET
+    }
+    return(log_level[level.lower()])
+
+def get_logger(logger_name):
+    global config, logger
+    logger = logging.getLogger(logger_name)
+    level = set_log_level('info')
+    logger.setLevel(level) # better to have too much log than not enough
+    logger.addHandler(get_console_handler())
+    # with this pattern, it's rarely necessary to propagate the error up to parent
+    logger.propagate = False
+    return logger
 
 def my_handler(message):
     # Here you can do stuff with the messages
-    print(message)
+    #print(type(message))
+    # Check type
+    # if dict
+    if type(message) == dict:
+        # Connection Information, Channel and Heartbeat
+        logger.debug(message)
+    # if list
+    if type(message) == list:
+        logger.info(message)
+
+logger = None
+logger = get_logger("kraken")
+
 
 my_client = client.WssClient()
 my_client.subscribe_public(
