@@ -4,10 +4,15 @@
 
 **Reference:** <a href="https://www.kraken.com/features/websocket-api" target="_blank">`Kraken Websocket Client API Documentation | github.com`</a>
 
+**Reference:** <a href="https://pypi.org/project/krakenex/" target="_blank">`Kraken REST API Client | github.com`</a>
+
+**Reference:** <a href="https://www.kraken.com/features/api" target="_blank">`Kraken REST API Reference | github.com`</a>
+
 - Kraken Python API Library
 
 - Notes
     + Websockets are for public information only
+    + Need to use REST API Client
 
 
 - Install the python library
