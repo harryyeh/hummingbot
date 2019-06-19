@@ -38,10 +38,10 @@ cdef class KrakenOrderBook(OrderBook):
         if metadata:
             msg.update(metadata)
         return OrderBookMessage(OrderBookMessageType.SNAPSHOT, {
-            "symbol": msg["symbol"],
-            "update_id": msg["lastUpdateId"],
-            "bids": msg["bids"],
-            "asks": msg["asks"]
+            "symbol": msg[1][3],
+            "update_id": message[1]['as'][0][2],
+            "bids": message[1]['as'],
+            "asks": message[1]['bs']
         }, timestamp=timestamp)
 
     @classmethod
@@ -52,7 +52,7 @@ cdef class KrakenOrderBook(OrderBook):
         if metadata:
             msg.update(metadata)
         return OrderBookMessage(OrderBookMessageType.DIFF, {
-            "symbol": msg["s"],
+            "symbol": msg[1][3],
             "update_id": msg["u"],
             "bids": msg["b"],
             "asks": msg["a"]
