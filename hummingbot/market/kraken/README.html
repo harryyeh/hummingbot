@@ -1102,6 +1102,7 @@ body .markdown-body
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
+
 <span class="c1"># Logging Functions</span>
 <span class="k">def</span> <span class="nf">get_console_handler</span><span class="p">():</span>
     <span class="n">FORMATTER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%(asctime)s</span><span class="s"> — </span><span class="si">%(name)s</span><span class="s"> — </span><span class="si">%(levelname)s</span><span class="s"> — </span><span class="si">%(message)s</span><span class="s">&quot;</span><span class="p">)</span>
@@ -1140,10 +1141,26 @@ body .markdown-body
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
     <span class="c1"># if list</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+        <span class="c1">#1st message is snapshot</span>
+        <span class="k">if</span> <span class="s">&quot;as&quot;</span> <span class="ow">in</span> <span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;snapshot:&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;as&#39;</span><span class="p">])</span>
+        <span class="c1"># a = asks</span>
+        <span class="k">elif</span> <span class="s">&quot;a&quot;</span> <span class="ow">in</span> <span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;ask:&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;a&#39;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="s">&quot;b&quot;</span> <span class="ow">in</span> <span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;bid:&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;b&#39;</span><span class="p">])</span>
+        <span class="c1"># b = bids</span>
+        <span class="c1">#logger.info(message[1][&quot;as&quot;])</span>
+        <span class="c1">#logger.info(type(message[1]))</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="bp">None</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="s">&quot;kraken&quot;</span><span class="p">)</span>
+
 
 
 <span class="n">my_client</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">WssClient</span><span class="p">()</span>
