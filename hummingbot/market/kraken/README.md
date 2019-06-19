@@ -135,3 +135,4 @@ my_client.start()
 - Get Trading Pairs
 - OrderBook
 - Trade History
+- Python Testing
