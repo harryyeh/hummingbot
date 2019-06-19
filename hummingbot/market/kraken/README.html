@@ -1064,6 +1064,9 @@ body .markdown-body
 <div class="codehilite"><pre>pip install kraken-wsclient-py
 </pre></div>
 
+<ul>
+<li>Trade Websocket</li>
+</ul>
 <div class="codehilite"><pre><span class="kn">from</span> <span class="nn">kraken_wsclient_py</span> <span class="kn">import</span> <span class="n">kraken_wsclient_py</span> <span class="k">as</span> <span class="n">client</span>
 
 <span class="k">def</span> <span class="nf">my_handler</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
@@ -1075,7 +1078,28 @@ body .markdown-body
     <span class="n">subscription</span><span class="o">=</span><span class="p">{</span>
         <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;trade&#39;</span>
     <span class="p">},</span>
-    <span class="n">pair</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;XBT/USD&#39;</span><span class="p">,</span> <span class="s">&#39;XRP/USD&#39;</span><span class="p">],</span>
+    <span class="n">pair</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;XBT/USD&#39;</span><span class="p">],</span>
+    <span class="n">callback</span><span class="o">=</span><span class="n">my_handler</span>
+<span class="p">)</span>
+
+<span class="n">my_client</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+
+<ul>
+<li>Orderbook Websocket</li>
+</ul>
+<div class="codehilite"><pre><span class="kn">from</span> <span class="nn">kraken_wsclient_py</span> <span class="kn">import</span> <span class="n">kraken_wsclient_py</span> <span class="k">as</span> <span class="n">client</span>
+
+<span class="k">def</span> <span class="nf">my_handler</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="c1"># Here you can do stuff with the messages</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+<span class="n">my_client</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">WssClient</span><span class="p">()</span>
+<span class="n">my_client</span><span class="o">.</span><span class="n">subscribe_public</span><span class="p">(</span>
+    <span class="n">subscription</span><span class="o">=</span><span class="p">{</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;book&#39;</span>
+    <span class="p">},</span>
+    <span class="n">pair</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;XBT/USD&#39;</span><span class="p">],</span>
     <span class="n">callback</span><span class="o">=</span><span class="n">my_handler</span>
 <span class="p">)</span>
 
