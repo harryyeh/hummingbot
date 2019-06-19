@@ -83,12 +83,14 @@ def my_handler(message):
         logger.debug(message)
     # if list
     if type(message) == list:
-        logger.debug(message)
+        logger.info(message)
 
-        #1st message is snapshot
+        #1st message is snapshot of bid and ask
         if "as" in message[1]:
-            logger.info("snapshot:")
+            logger.info("ask snapshot:")
             logger.info(message[1]['as'])
+            logger.info("bid snapshot:")
+            logger.info(message[1]['bs'])
         # a = asks
         elif "a" in message[1]:
             logger.info("ask:")
@@ -96,6 +98,7 @@ def my_handler(message):
         elif "b" in message[1]:
             logger.info("bid:")
             logger.info(message[1]['b'])
+        logger.info("symbol: " + message[3])
         # b = bids
         #logger.info(message[1]["as"])
         #logger.info(type(message[1]))
